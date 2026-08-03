@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冯宸歆 · Adaptive Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Playfair+Display:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ================================
+   RESET & BASE
+   ================================ */
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;scrollbar-width:thin;scrollbar-color:var(--primary) transparent}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--primary);border-radius:3px;opacity:.5}
+body{font-family:var(--font-body);color:var(--ink);background:var(--bg);line-height:1.6;overflow-x:hidden;transition:background .4s,color .4s}
+
+/* ================================
+   THEME: MARKETING (default — Creative/Brand)
+   ================================ */
+:root{
+  --primary:#8b5cf6;--primary-light:#a78bfa;--primary-dark:#7c3aed;
+  --accent:#ec4899;--accent2:#f59e0b;
+  --bg:#faf5ff;--bg2:#f3e8ff;--card:#ffffff;
+  --ink:#1a1033;--ink2:#5b4d75;--ink3:#9b8fb5;
+  --border:#ede5f5;--border2:#ddd0ee;
+  --font-heading:'Inter','Noto Sans SC',sans-serif;
+  --font-body:'Inter','Noto Sans SC',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:20px;--radius-sm:12px;
+  --shadow:0 8px 32px rgba(139,92,246,.08);
+  --shadow-lg:0 20px 60px rgba(139,92,246,.15);
+  --shadow-card:0 4px 24px rgba(139,92,246,.06);
+  --grad:linear-gradient(135deg,#8b5cf6,#ec4899);
+  --grad-soft:linear-gradient(135deg,#f5f0ff,#fdf0f8);
+  --hero-bg:linear-gradient(135deg,#8b5cf6 0%,#ec4899 50%,#f59e0b 100%);
+  --transition:.4s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="crossborder"]{
+  --primary:#2563eb;--primary-light:#3b82f6;--primary-dark:#1d4ed8;
+  --accent:#06b6d4;--accent2:#10b981;
+  --bg:#f1f5f9;--bg2:#e2e8f0;--card:#ffffff;
+  --ink:#0f172a;--ink2:#475569;--ink3:#94a3b8;
+  --border:#e2e8f0;--border2:#cbd5e1;
+  --font-heading:'Inter','Noto Sans SC',sans-serif;
+  --font-body:'Inter','Noto Sans SC',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 2px 8px rgba(37,99,235,.06);
+  --shadow-lg:0 8px 30px rgba(37,99,235,.12);
+  --shadow-card:0 1px 4px rgba(15,23,42,.06);
+  --grad:linear-gradient(135deg,#2563eb,#06b6d4);
+  --grad-soft:linear-gradient(135deg,#eff6ff,#ecfeff);
+  --hero-bg:#0f172a;
+  --transition:.3s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="merchant"]{
+  --primary:#047857;--primary-light:#059669;--primary-dark:#065f46;
+  --accent:#d97706;--accent2:#7c3aed;
+  --bg:#f7f9f7;--bg2:#ecf3ec;--card:#ffffff;
+  --ink:#1a2e1a;--ink2:#4a5d4a;--ink3:#8a9a8a;
+  --border:#e0e8e0;--border2:#d0dccd;
+  --font-heading:'Playfair Display','Noto Sans SC',serif;
+  --font-body:'Inter','Noto Sans SC',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --radius:8px;--radius-sm:4px;
+  --shadow:0 1px 3px rgba(4,120,87,.06);
+  --shadow-lg:0 6px 20px rgba(4,120,87,.10);
+  --shadow-card:0 1px 3px rgba(0,0,0,.05);
+  --grad:linear-gradient(135deg,#047857,#059669);
+  --grad-soft:linear-gradient(135deg,#ecfdf5,#f0fdf4);
+  --hero-bg:linear-gradient(170deg,#ffffff 0%,#f0fdf4 60%,#ecfdf5 100%);
+  --transition:.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ================================
+   NAVIGATION
+   ================================ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(255,255,255,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all var(--transition)}
+[data-theme="crossborder"] .nav{background:rgba(241,245,249,.9)}
+[data-theme="merchant"] .nav{background:rgba(247,249,247,.9)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-size:17px;font-weight:800;color:var(--ink);text-decoration:none;letter-spacing:-.5px;font-family:var(--font-heading)}
+.nav-logo span{color:var(--primary)}
+.nav-links{display:flex;gap:2px;align-items:center}
+.nav-links a{padding:7px 13px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink2);text-decoration:none;transition:all .2s;cursor:pointer}
+.nav-links a:hover{color:var(--primary);background:var(--bg2)}
+.nav-links a.active{color:var(--primary);background:var(--bg2)}
+.nav-version{display:flex;gap:2px;padding:3px;background:var(--bg2);border-radius:10px;margin-left:8px}
+.nav-version button{padding:5px 11px;border:none;background:transparent;border-radius:7px;font-size:11px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:var(--font-mono);letter-spacing:.5px}
+.nav-version button.active{background:var(--card);color:var(--primary);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.nav-toggle{display:none;background:none;border:none;font-size:20px;color:var(--ink);cursor:pointer}
+
+/* ================================
+   LAYOUT
+   ================================ */
+section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
+.container{max-width:1100px;margin:0 auto}
+.sec-label{display:inline-block;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;background:var(--bg2);color:var(--primary);margin-bottom:12px;font-family:var(--font-mono)}
+.sec-title{font-size:36px;font-weight:900;letter-spacing:-1px;line-height:1.15;color:var(--ink);margin-bottom:10px;font-family:var(--font-heading)}
+.sec-sub{font-size:15px;color:var(--ink2);margin-bottom:36px;max-width:600px}
+
+/* ================================
+   HERO — MARKETING (Creative)
+   ================================ */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:var(--hero-bg);transition:background .5s}
+.hero-mkt{position:relative;z-index:1;width:100%;max-width:1100px;margin:0 auto;padding:120px 24px 60px}
+.hero-mkt .eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;color:rgba(255,255,255,.7);margin-bottom:20px;font-family:var(--font-mono)}
+.hero-mkt h1{font-size:72px;font-weight:900;letter-spacing:-3px;line-height:1.05;color:#fff;margin-bottom:16px}
+.hero-mkt h1 .grad{background:linear-gradient(90deg,#fef3c7,#fde68a,#fbbf24);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-mkt .tagline{font-size:24px;font-weight:500;color:rgba(255,255,255,.8);margin-bottom:12px}
+.hero-mkt .desc{font-size:16px;color:rgba(255,255,255,.6);max-width:520px;line-height:1.7;margin-bottom:36px}
+.hero-mkt .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px;max-width:680px}
+.hero-mkt .stat{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:18px 14px;text-align:center}
+.hero-mkt .stat .n{font-size:26px;font-weight:900;color:#fff;letter-spacing:-1px}
+.hero-mkt .stat .d{font-size:11px;color:rgba(255,255,255,.6);margin-top:4px;font-weight:500}
+.hero-mkt .cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-mkt .btn1{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:30px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:all .3s}
+.hero-mkt .btn1:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,0,0,.2)}
+.hero-mkt .btn2{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;border-radius:30px;background:rgba(255,255,255,.1);color:#fff;font-size:14px;font-weight:700;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;transition:all .3s}
+.hero-mkt .btn2:hover{background:rgba(255,255,255,.2)}
+.hero-orbs{position:absolute;inset:0;overflow:hidden;z-index:0}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.3}
+.hero-orb.o1{width:400px;height:400px;background:#f59e0b;top:-100px;right:-50px;animation:drift 12s ease-in-out infinite}
+.hero-orb.o2{width:300px;height:300px;background:#ec4899;bottom:0;left:-80px;animation:drift 15s ease-in-out infinite 2s}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(30px,-30px)}}
+.hero-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;font-weight:600;animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+/* ================================
+   HERO — CROSSBORDER (Dashboard)
+   ================================ */
+.hero-cb{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:100vh;background:var(--hero-bg)}
+.hero-cb-left{padding:120px 40px 60px;display:flex;flex-direction:column;justify-content:center}
+.hero-cb-left .eyebrow{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--accent);margin-bottom:16px;font-family:var(--font-mono)}
+.hero-cb-left h1{font-size:48px;font-weight:900;letter-spacing:-1.5px;line-height:1.1;color:#fff;margin-bottom:12px}
+.hero-cb-left h1 .hl{color:var(--accent)}
+.hero-cb-left .tagline{font-size:18px;font-weight:500;color:rgba(255,255,255,.7);margin-bottom:10px}
+.hero-cb-left .desc{font-size:14px;color:rgba(255,255,255,.5);max-width:420px;line-height:1.7;margin-bottom:28px}
+.hero-cb-left .cta{display:flex;gap:10px}
+.hero-cb-left .btn1{padding:11px 24px;border-radius:8px;background:var(--primary);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.hero-cb-left .btn1:hover{background:var(--primary-light);transform:translateY(-1px)}
+.hero-cb-left .btn2{padding:11px 24px;border-radius:8px;background:transparent;color:#fff;font-size:13px;font-weight:700;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none}
+.hero-cb-right{background:#1e293b;padding:80px 40px 60px;display:flex;flex-direction:column;gap:16px;justify-content:center;border-left:1px solid rgba(255,255,255,.05)}
+.cb-widget{background:#1e293b;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px}
+.cb-widget-title{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:12px;font-family:var(--font-mono);letter-spacing:1px}
+.cb-metric-row{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.cb-metric-val{font-size:28px;font-weight:900;color:#fff;font-family:var(--font-mono)}
+.cb-metric-change{font-size:12px;font-weight:700;color:var(--accent2)}
+.cb-metric-label{font-size:12px;color:rgba(255,255,255,.4)}
+.cb-chart{display:flex;align-items:flex-end;gap:4px;height:60px;margin-top:12px}
+.cb-bar{flex:1;border-radius:3px 3px 0 0;background:linear-gradient(to top,var(--primary),var(--primary-light));transition:height 1s ease}
+.cb-gauge{width:80px;height:80px;border-radius:50%;background:conic-gradient(var(--accent2) 0deg 96deg,rgba(255,255,255,.08) 96deg 360deg);display:flex;align-items:center;justify-content:center;margin:0 auto}
+.cb-gauge-inner{width:60px;height:60px;border-radius:50%;background:#1e293b;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;font-family:var(--font-mono)}
+.cb-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* ================================
+   HERO — MERCHANT (Consulting)
+   ================================ */
+.hero-mer{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;background:var(--hero-bg);padding:120px 24px 60px;position:relative}
+.hero-mer .eyebrow{font-size:12px;font-weight:600;letter-spacing:3px;color:var(--primary);margin-bottom:24px;font-family:var(--font-mono);text-transform:uppercase}
+.hero-mer h1{font-size:52px;font-weight:800;letter-spacing:-1px;line-height:1.15;color:var(--ink);margin-bottom:16px;max-width:800px;font-family:var(--font-heading)}
+.hero-mer h1 em{color:var(--primary);font-style:normal}
+.hero-mer .tagline{font-size:20px;font-weight:400;color:var(--ink2);margin-bottom:12px;max-width:600px}
+.hero-mer .desc{font-size:15px;color:var(--ink3);max-width:480px;line-height:1.7;margin-bottom:40px}
+.hero-mer .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-bottom:40px;max-width:800px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--card);box-shadow:var(--shadow)}
+.hero-mer .stat{padding:24px 20px;border-right:1px solid var(--border)}
+.hero-mer .stat:last-child{border-right:none}
+.hero-mer .stat .n{font-size:28px;font-weight:800;color:var(--primary);font-family:var(--font-heading);letter-spacing:-1px}
+.hero-mer .stat .d{font-size:12px;color:var(--ink3);margin-top:4px}
+.hero-mer .cta{display:flex;gap:12px}
+.hero-mer .btn1{padding:12px 28px;border-radius:6px;background:var(--primary);color:#fff;font-size:14px;font-weight:600;border:none;cursor:pointer;text-decoration:none;transition:all .2s}
+.hero-mer .btn1:hover{background:var(--primary-dark)}
+.hero-mer .btn2{padding:12px 28px;border-radius:6px;background:transparent;color:var(--ink);font-size:14px;font-weight:600;border:1px solid var(--border2);cursor:pointer;text-decoration:none}
+.hero-mer-framework{margin-top:48px;display:flex;gap:0;max-width:700px}
+.hero-mer-fw-item{flex:1;text-align:center;padding:16px 12px;position:relative}
+.hero-mer-fw-item:not(:last-child)::after{content:'';position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:24px;height:2px;background:var(--border2)}
+.hero-mer-fw-icon{width:44px;height:44px;border-radius:50%;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:18px;margin:0 auto 8px}
+.hero-mer-fw-label{font-size:13px;font-weight:700;color:var(--ink)}
+.hero-mer-fw-sub{font-size:11px;color:var(--ink3);margin-top:2px}
+
+/* ================================
+   ABOUT
+   ================================ */
+.about-grid{display:grid;grid-template-columns:340px 1fr;gap:24px}
+.about-card{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-card);border:1px solid var(--border)}
+.about-avatar{width:100px;height:100px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;color:#fff;margin:0 auto 16px}
+.about-info{text-align:center}
+.about-info h3{font-size:20px;font-weight:800;color:var(--ink);margin-bottom:4px;font-family:var(--font-heading)}
+.about-info .role{font-size:13px;color:var(--primary);font-weight:600;margin-bottom:14px}
+.about-info .meta{font-size:13px;color:var(--ink2);line-height:2;text-align:left}
+.about-info .meta div{display:flex;gap:8px;align-items:center}
+.edu-item{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--border)}
+.edu-item:last-child{border-bottom:none}
+.edu-icon{width:36px;height:36px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.edu-body h4{font-size:14px;font-weight:700;color:var(--ink)}
+.edu-body .edu-time{font-size:12px;color:var(--ink3)}
+.edu-body p{font-size:12px;color:var(--ink2);margin-top:3px}
+.about-text{font-size:14px;color:var(--ink2);line-height:1.9}
+.about-text p{margin-bottom:10px}
+.about-text strong{color:var(--ink)}
+.career-overview{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.career-chip{background:var(--bg2);border-radius:var(--radius-sm);padding:12px;text-align:center}
+.career-chip .ci{font-size:18px;margin-bottom:4px}
+.career-chip .cn{font-size:11px;font-weight:700;color:var(--ink)}
+.career-chip .ct{font-size:10px;color:var(--ink3);margin-top:2px}
+
+/* ================================
+   EXPERIENCE TIMELINE
+   ================================ */
+.tl-item{background:var(--card);border-radius:var(--radius);padding:22px 26px;margin-bottom:14px;box-shadow:var(--shadow-card);border-left:4px solid var(--primary);transition:all var(--transition);cursor:pointer}
+.tl-item:hover{box-shadow:var(--shadow-lg);transform:translateX(4px)}
+.tl-item.expanded{border-left-width:6px}
+.tl-header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+.tl-left{flex:1}
+.tl-company{font-size:11px;font-weight:700;color:var(--primary);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-mono)}
+.tl-title{font-size:17px;font-weight:800;color:var(--ink);margin:3px 0;font-family:var(--font-heading)}
+.tl-role{font-size:13px;color:var(--ink2)}
+.tl-time{font-size:13px;color:var(--ink3);font-weight:600;white-space:nowrap;font-family:var(--font-mono)}
+.tl-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.tl-tag{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;background:var(--bg2);color:var(--primary)}
+.tl-detail{max-height:0;overflow:hidden;transition:max-height .5s ease}
+.tl-item.expanded .tl-detail{max-height:1200px}
+.tl-detail-inner{padding-top:14px;border-top:1px solid var(--border);margin-top:14px}
+.tl-project{margin-bottom:14px}
+.tl-project h5{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:5px}
+.tl-project p{font-size:13px;color:var(--ink2);line-height:1.7}
+.tl-metrics{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.tl-metric{padding:4px 10px;border-radius:7px;font-size:11px;font-weight:700;background:var(--bg2);color:var(--primary-dark)}
+.tl-hint{font-size:12px;color:var(--ink3);margin-top:8px}
+.tl-item.expanded .tl-hint{display:none}
+
+/* ================================
+   PROJECTS
+   ================================ */
+.pf-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.pf-btn{padding:7px 15px;border-radius:20px;border:1px solid var(--border);background:var(--card);font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:var(--font-body)}
+.pf-btn:hover{border-color:var(--primary);color:var(--primary)}
+.pf-btn.active{background:var(--grad);color:#fff;border-color:transparent}
+[data-theme="crossborder"] .pf-btn.active{border-radius:8px}
+[data-theme="merchant"] .pf-btn.active{border-radius:6px}
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+[data-theme="crossborder"] .proj-grid{gap:14px}
+[data-theme="merchant"] .proj-grid{gap:16px}
+.proj-card{background:var(--card);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-card);transition:all var(--transition);border:1px solid var(--border);cursor:pointer;display:flex;flex-direction:column}
+.proj-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-4px);border-color:var(--primary-light)}
+.pc-banner{height:72px;background:var(--grad);position:relative;display:flex;align-items:center;padding:0 20px;justify-content:space-between}
+[data-theme="crossborder"] .pc-banner{height:48px;background:var(--bg2)}
+[data-theme="merchant"] .pc-banner{height:60px;background:var(--bg2);border-bottom:2px solid var(--primary)}
+.pc-icon{font-size:28px;color:#fff}
+[data-theme="crossborder"] .pc-icon,[data-theme="merchant"] .pc-icon{font-size:20px;color:var(--primary)}
+.pc-cat{position:absolute;right:16px;top:14px;padding:3px 10px;border-radius:6px;background:rgba(255,255,255,.2);color:#fff;font-size:10px;font-weight:700;letter-spacing:1px;font-family:var(--font-mono)}
+[data-theme="crossborder"] .pc-cat,[data-theme="merchant"] .pc-cat{background:var(--primary);color:#fff;position:static}
+.pc-body{padding:18px;flex:1;display:flex;flex-direction:column}
+.pc-name{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:3px;font-family:var(--font-heading)}
+.pc-company{font-size:12px;color:var(--primary);font-weight:600;margin-bottom:8px}
+.pc-desc{font-size:13px;color:var(--ink2);line-height:1.6;flex:1}
+.pc-stats{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.pc-stat{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:700;background:var(--bg2);color:var(--primary);font-family:var(--font-mono)}
+.pc-arrow{margin-top:10px;font-size:13px;font-weight:600;color:var(--primary)}
+
+/* ================================
+   MODAL
+   ================================ */
+.modal-overlay{position:fixed;inset:0;background:rgba(15,10,30,.6);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:24px}
+.modal-overlay.show{display:flex;animation:fadeIn .3s}
+.modal{background:var(--card);border-radius:20px;max-width:620px;width:100%;max-height:80vh;overflow-y:auto;padding:32px;animation:slideUp .4s}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.modal-close{float:right;background:var(--bg2);border:none;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;color:var(--primary)}
+.modal h2{font-size:22px;font-weight:900;color:var(--ink);margin-bottom:6px;font-family:var(--font-heading)}
+.modal .mc-company{font-size:14px;color:var(--primary);font-weight:600;margin-bottom:16px}
+.modal .mc-body{font-size:14px;color:var(--ink2);line-height:1.8}
+.modal .mc-body h4{font-size:15px;font-weight:700;color:var(--ink);margin:14px 0 6px}
+.modal .mc-body ul{padding-left:18px;margin:6px 0}
+.modal .mc-body li{margin-bottom:4px}
+.modal .mc-metrics{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.modal .mc-metrics .mm{padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;background:var(--bg2);color:var(--primary)}
+
+/* ================================
+   AI LAB
+   ================================ */
+.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ai-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-card);border-top:4px solid var(--primary);transition:all var(--transition)}
+[data-theme="crossborder"] .ai-card{border-top:none;border-left:4px solid var(--primary)}
+.ai-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.ai-card .ai-icon{font-size:26px;margin-bottom:10px}
+.ai-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:6px;font-family:var(--font-heading)}
+.ai-card p{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px}
+.ai-card .ai-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ai-card .ai-tags span{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;background:var(--bg2);color:var(--primary);font-family:var(--font-mono)}
+.prompt-showcase{margin-top:28px;background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-card)}
+.prompt-showcase h3{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:14px;font-family:var(--font-heading)}
+.prompt-tabs{display:flex;gap:6px;margin-bottom:14px}
+.prompt-tab{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:600;background:var(--bg2);color:var(--ink2);cursor:pointer;transition:all .2s;border:none;font-family:var(--font-body)}
+.prompt-tab.active{background:var(--grad);color:#fff}
+.prompt-box{background:#0f172a;border-radius:12px;padding:20px;font-family:var(--font-mono);font-size:13px;color:#cbd5e1;line-height:1.8;white-space:pre-wrap}
+.prompt-box .pk{color:#a78bfa}
+.prompt-box .pv{color:#fbbf24}
+
+/* ================================
+   INSIGHTS
+   ================================ */
+.insights-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.insight-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-card);border:1px solid var(--border);transition:all var(--transition);cursor:pointer;position:relative;overflow:hidden}
+.insight-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-3px);border-color:var(--primary-light)}
+.insight-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;background:var(--grad)}
+[data-theme="crossborder"] .insight-card::before{width:100%;height:3px;top:0;left:0}
+.insight-card .ic-cat{font-size:11px;font-weight:700;color:var(--primary);letter-spacing:1px;text-transform:uppercase;font-family:var(--font-mono);margin-bottom:8px}
+.insight-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:8px;line-height:1.3;font-family:var(--font-heading)}
+.insight-card p{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:12px}
+.insight-card .ic-meta{display:flex;gap:12px;font-size:11px;color:var(--ink3);font-family:var(--font-mono)}
+
+/* ================================
+   SKILLS
+   ================================ */
+.skills-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:20px}
+.skill-bar{margin-bottom:8px}
+.skill-head{display:flex;justify-content:space-between;margin-bottom:4px}
+.skill-name{font-size:13px;font-weight:600;color:var(--ink)}
+.skill-val{font-size:12px;font-weight:700;color:var(--primary);font-family:var(--font-mono)}
+.skill-track{height:7px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.skill-fill{height:100%;border-radius:4px;background:var(--grad);transition:width 1s ease}
+.skills-tags{display:flex;gap:8px;flex-wrap:wrap}
+.skills-tags .st{padding:7px 15px;border-radius:20px;font-size:13px;font-weight:600;background:var(--bg2);color:var(--primary);border:1px solid var(--border)}
+[data-theme="crossborder"] .st{border-radius:8px;font-family:var(--font-mono);font-size:12px}
+[data-theme="merchant"] .st{border-radius:6px}
+
+/* ================================
+   RESUME
+   ================================ */
+.resume-box{background:var(--card);border-radius:var(--radius);padding:30px;box-shadow:var(--shadow-card)}
+.resume-sec{margin-bottom:22px}
+.resume-sec h4{font-size:13px;font-weight:700;color:var(--primary);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;padding-bottom:5px;border-bottom:2px solid var(--bg2);font-family:var(--font-mono)}
+.resume-item{margin-bottom:12px}
+.resume-item .ri-title{font-size:14px;font-weight:700;color:var(--ink)}
+.resume-item .ri-meta{font-size:12px;color:var(--ink3)}
+.resume-item .ri-desc{font-size:13px;color:var(--ink2);margin-top:3px;line-height:1.6}
+
+/* ================================
+   CONTACT
+   ================================ */
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px}
+.contact-card{background:var(--card);border-radius:var(--radius);padding:26px;text-align:center;box-shadow:var(--shadow-card);transition:all var(--transition);text-decoration:none;border:1px solid var(--border)}
+.contact-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.contact-card .cc-icon{font-size:28px;margin-bottom:10px}
+.contact-card .cc-label{font-size:11px;color:var(--ink3);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;font-family:var(--font-mono)}
+.contact-card .cc-value{font-size:14px;font-weight:700;color:var(--ink)}
+.contact-footer{text-align:center;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
+.contact-footer p{font-size:13px;color:var(--ink3)}
+
+/* ================================
+   ANIMATIONS
+   ================================ */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.fade-in{animation:fadeIn .5s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.version-transition{animation:versionPulse .6s ease}
+@keyframes versionPulse{0%{opacity:.5}50%{opacity:.8}100%{opacity:1}}
+
+/* ================================
+   RESPONSIVE
+   ================================ */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .nav-links.open{display:flex;position:absolute;top:60px;left:0;right:0;flex-direction:column;background:var(--card);padding:16px;gap:4px;box-shadow:var(--shadow-lg)}
+  .nav-toggle{display:block}
+  .nav-version{margin-left:auto}
+  .hero-mkt h1{font-size:42px}
+  .hero-cb{grid-template-columns:1fr}
+  .hero-cb-right{display:none}
+  .hero-mer h1{font-size:34px}
+  .hero-mer .stats{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:1fr}
+  .career-overview{grid-template-columns:repeat(2,1fr)}
+  .proj-grid{grid-template-columns:1fr}
+  .ai-grid{grid-template-columns:1fr}
+  .insights-grid{grid-template-columns:1fr}
+  .skills-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .sec-title{font-size:28px}
+  .hero-mkt .stats{grid-template-columns:repeat(2,1fr)}
+  .hero-mer-framework{flex-wrap:wrap;gap:12px}
+  .hero-mer-fw-item:not(:last-child)::after{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">冯宸歆<span>.</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#home" class="active">Home</a>
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#ailab">AI Lab</a>
+      <a href="#insights">Insights</a>
+      <a href="#resume">Resume</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-version" id="verSwitch">
+      <button class="active" data-ver="marketing" onclick="switchVersion('marketing')">Marketing</button>
+      <button data-ver="crossborder" onclick="switchVersion('crossborder')">Cross-border</button>
+      <button data-ver="merchant" onclick="switchVersion('merchant')">Merchant</button>
+    </div>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="home" style="padding:0"></section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="container">
+    <div class="sec-label reveal">About</div>
+    <h2 class="sec-title reveal">关于我</h2>
+    <p class="sec-sub reveal" id="aboutSub">天津财经大学国际商务专业，4段实习覆盖跨境电商与平台电商运营全链路。</p>
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="about-card" style="margin-bottom:16px">
+          <div class="about-avatar">冯</div>
+          <div class="about-info">
+            <h3>冯宸歆</h3>
+            <p class="role" id="aboutRole">营销运营 · 电商运营</p>
+            <div class="meta">
+              <div>📍 天津财经大学</div>
+              <div>📖 国际商务（本科）</div>
+              <div>🎓 2023.09 - 2027.06</div>
+              <div>📧 feng13207649343@163.com</div>
+              <div>📱 13207649343</div>
+              <div>🌐 CET-6 · 国才中级</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="edu-item"><div class="edu-icon">🎓</div><div class="edu-body"><h4>天津财经大学 · 国际商务</h4><p class="edu-time">2023.09 - 2027.06</p><p>国际贸易、跨境电商、国际市场营销、国际商法、商务英语</p></div></div>
+          <div class="edu-item"><div class="edu-icon">🏆</div><div class="edu-body"><h4>电商挑战赛 · 铜奖（国家级）</h4><p class="edu-time">2024.12 - 2025.06</p><p>问卷2000份，产品定位个性化定制+线下养生渠道</p></div></div>
+          <div class="edu-item"><div class="edu-icon">📜</div><div class="edu-body"><h4>证书</h4><p>CET-6 · 国才中级</p></div></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="about-card" style="margin-bottom:16px">
+          <div class="about-text" id="aboutText"></div>
+          <div class="career-overview">
+            <div class="career-chip"><div class="ci">🏬</div><div class="cn">京东试用</div><div class="ct">营销运营</div></div>
+            <div class="career-chip"><div class="ci">💊</div><div class="cn">京东健康</div><div class="ct">CPS运营</div></div>
+            <div class="career-chip"><div class="ci">🌍</div><div class="cn">万物心选</div><div class="ct">B2C跨境</div></div>
+            <div class="career-chip"><div class="ci">🏭</div><div class="cn">九祥科贸</div><div class="ct">B2B跨境</div></div>
+          </div>
+        </div>
+        <div class="about-card">
+          <h4 style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:12px;font-family:var(--font-heading)">核心能力</h4>
+          <div id="aboutSkills" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section id="experience" style="background:var(--bg2)">
+  <div class="container">
+    <div class="sec-label reveal">Experience</div>
+    <h2 class="sec-title reveal">实习经历</h2>
+    <p class="sec-sub reveal">4段实习，从跨境电商到平台电商，逐步深入运营全链路。点击展开详细项目。</p>
+    <div id="timeline"></div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section id="projects">
+  <div class="container">
+    <div class="sec-label reveal">Projects</div>
+    <h2 class="sec-title reveal">项目作品库</h2>
+    <p class="sec-sub reveal" id="projSub">9个项目案例，覆盖活动策划、投放优化、内容增长、跨境运营全场景。</p>
+    <div class="pf-filter reveal">
+      <button class="pf-btn active" onclick="filterProjects('all',this)">全部</button>
+      <button class="pf-btn" onclick="filterProjects('campaign',this)">活动策划</button>
+      <button class="pf-btn" onclick="filterProjects('ads',this)">投放优化</button>
+      <button class="pf-btn" onclick="filterProjects('content',this)">内容增长</button>
+      <button class="pf-btn" onclick="filterProjects('crossborder',this)">跨境运营</button>
+      <button class="pf-btn" onclick="filterProjects('strategy',this)">策略分析</button>
+    </div>
+    <div class="proj-grid" id="projGrid"></div>
+  </div>
+</section>
+
+<!-- ===== AI LAB ===== -->
+<section id="ailab" style="background:var(--bg2)">
+  <div class="container">
+    <div class="sec-label reveal">AI Lab</div>
+    <h2 class="sec-title reveal">AI 运营实验室</h2>
+    <p class="sec-sub reveal">AI不是噱头，而是真正帮助提升运营效率的杠杆。从内容生成到流程自动化，探索AI赋能电商运营的实践路径。</p>
+    <div class="ai-grid">
+      <div class="ai-card reveal"><div class="ai-icon">⚙️</div><h3>AI 自动化工作流</h3><p>基于AI Agent构建自动化工作流，批量查询SKU促销信息并自动判断入券状态，替代人工逐条查询，效率提升10倍。</p><div class="ai-tags"><span>SKU批量查询</span><span>入券判断</span><span>100%自动化</span></div></div>
+      <div class="ai-card reveal"><div class="ai-icon">🎨</div><h3>AIGC 内容生产</h3><p>使用Midjourney生成场景化内容，AI辅助文案产出50+套/小时，5种风格切换，80%可直接采用率，素材复用率提升3倍。</p><div class="ai-tags"><span>Midjourney</span><span>种草文案</span><span>AB测试</span></div></div>
+      <div class="ai-card reveal"><div class="ai-icon">📊</div><h3>AI 数据分析</h3><p>基于真实活动数据，AI辅助分析转化趋势、归因诊断、输出优化建议。自动洞察CTR/CVR提升归因，ROI达33:1。</p><div class="ai-tags"><span>趋势分析</span><span>归因诊断</span><span>优化建议</span></div></div>
+    </div>
+    <div class="prompt-showcase reveal">
+      <h3>💡 Prompt 实践案例</h3>
+      <div class="prompt-tabs">
+        <button class="prompt-tab active" onclick="switchPrompt('ugc',this)">小红书种草文案</button>
+        <button class="prompt-tab" onclick="switchPrompt('campaign',this)">活动方案生成</button>
+        <button class="prompt-tab" onclick="switchPrompt('analysis',this)">数据洞察分析</button>
+      </div>
+      <div class="prompt-box" id="promptBox"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSIGHTS ===== -->
+<section id="insights">
+  <div class="container">
+    <div class="sec-label reveal">Insights</div>
+    <h2 class="sec-title reveal">运营思考</h2>
+    <p class="sec-sub reveal">不只执行，更会思考。从数据中发现机会，从实践中提炼方法论。</p>
+    <div class="insights-grid" id="insightsGrid"></div>
+  </div>
+</section>
+
+<!-- ===== SKILLS ===== -->
+<section id="skills" style="background:var(--bg2)">
+  <div class="container">
+    <div class="sec-label reveal">Skills</div>
+    <h2 class="sec-title reveal">技能矩阵</h2>
+    <p class="sec-sub reveal">核心技能随版本切换自动调整重点。</p>
+    <div class="skills-grid" id="skillsGrid"></div>
+    <div class="skills-tags reveal" id="skillsTags"></div>
+  </div>
+</section>
+
+<!-- ===== RESUME ===== -->
+<section id="resume">
+  <div class="container">
+    <div class="sec-label reveal">Resume</div>
+    <h2 class="sec-title reveal">在线简历</h2>
+    <p class="sec-sub reveal">完整简历信息在线查看。</p>
+    <div class="resume-box reveal">
+      <div class="resume-sec"><h4>求职意向</h4><div class="resume-item"><div class="ri-title" id="resumeTarget">电商运营 / 营销运营 / 跨境电商运营</div><div class="ri-meta">期望城市：深圳、广州、杭州、成都、重庆 | 2027届</div></div></div>
+      <div class="resume-sec"><h4>教育背景</h4><div class="resume-item"><div class="ri-title">天津财经大学 · 国际商务（本科）</div><div class="ri-meta">2023.09 - 2027.06</div></div></div>
+      <div class="resume-sec"><h4>实习经历</h4>
+        <div class="resume-item"><div class="ri-title">京东·试用频道 — 营销运营实习生</div><div class="ri-meta">2026.03 - 2026.07 | 北京</div><div class="ri-desc">618大促招商策略（成交2889万+70.1%）、RTB投放优化（BigDay 1000万+UV）、小红书UGC增长（1500+篇/50w+曝光）、五一活动（PV 200w）</div></div>
+        <div class="resume-item"><div class="ri-title">京东健康 — CPS行业运营实习生</div><div class="ri-meta">2025.09 - 2026.02 | 北京</div><div class="ri-desc">活动成交2.45亿+16%、爆品8W→263W +90%、商家49.6W→6500W、跨域ROI 7</div></div>
+        <div class="resume-item"><div class="ri-title">万物心选 — 跨境电商运营实习生（B2C）</div><div class="ri-meta">2024.12 - 2025.08</div><div class="ri-desc">CTR 0.3%→1.6%、日销翻倍100单、曝光+275%、ACOS<10%、净利率+2.3pct</div></div>
+        <div class="resume-item"><div class="ri-title">九祥科贸 — 跨境电商运营实习生（B2B）</div><div class="ri-meta">2024.09 - 2024.11</div><div class="ri-desc">Listing优化访客+2w/询盘+20%、LinkedIn转化+30%、100+条社媒、满意度98%</div></div>
+      </div>
+      <div class="resume-sec"><h4>竞赛与证书</h4><div class="resume-item"><div class="ri-title">全国大学生电子商务挑战赛 · 铜奖（国家级）</div><div class="ri-meta">2024.12 - 2025.06</div></div><div class="resume-item"><div class="ri-title">CET-6 · 国才中级</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section id="contact" style="background:var(--bg2)">
+  <div class="container">
+    <div class="sec-label reveal">Contact</div>
+    <h2 class="sec-title reveal">联系方式</h2>
+    <p class="sec-sub reveal">欢迎随时联系，期待与您交流运营机会。</p>
+    <div class="contact-grid">
+      <a href="mailto:feng13207649343@163.com" class="contact-card reveal"><div class="cc-icon">📧</div><div class="cc-label">Email</div><div class="cc-value">feng13207649343@163.com</div></a>
+      <a href="tel:13207649343" class="contact-card reveal"><div class="cc-icon">📱</div><div class="cc-label">Phone</div><div class="cc-value">132 0764 9343</div></a>
+      <div class="contact-card reveal"><div class="cc-icon">📍</div><div class="cc-label">Location</div><div class="cc-value">天津 → 深圳/广州/杭州/成都</div></div>
+    </div>
+    <div class="contact-footer"><p>© 2026 冯宸歆 · Adaptive Portfolio · 2027届秋招</p><p style="margin-top:4px">4段实习 · 2.45亿GMV · 9个项目 · AI赋能运营</p></div>
+  </div>
+</section>
+
+<!-- ===== MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal"><button class="modal-close" onclick="closeModal()">✕</button><div id="modalContent"></div></div>
+</div>
+
+<script>
+// ========== VERSION CONFIG ==========
+const VERSIONS = {
+  marketing: {
+    label:'Marketing',heroType:'mkt',
+    eyebrow:'MARKETING OPERATIONS · 2027届秋招',
+    h1:'用创意与数据，<br><span class="grad">驱动增长</span>',
+    tagline:'Marketing Operations · 品牌营销 · 用户增长',
+    desc:'4段实习覆盖电商运营全链路，以活动策划与用户增长为核心，用AI赋能营销效率。618大促+RTB投放+UGC增长全链路实战。',
+    role:'营销运营 · 电商运营',
+    aboutSub:'以活动策划与用户增长为核心，用创意驱动品牌增长，用AI赋能营销效率。',
+    aboutText:`<p>天津财经大学国际商务专业2027届，4段实习覆盖<strong>跨境电商B2B/B2C</strong>、<strong>京东CPS行业运营</strong>、<strong>京东试用营销运营</strong>。</p><p>核心能力：<strong>活动策划全流程</strong>（618招商/五一独立策划）、<strong>数据驱动</strong>（CTR/CVR/ROI全指标优化）、<strong>AI赋能</strong>（Midjourney/AI Agent自动化）。</p><p>所有经历均有量化结果：<strong>2.45亿GMV</strong>、<strong>PV 200w</strong>、<strong>1500+ UGC</strong>。</p>`,
+    aboutSkills:['活动策划','品牌营销','用户增长','AI运营','数据驱动','UGC增长','AIGC','跨部门协同'],
+    stats:[{n:'200w',d:'五一活动PV'},{n:'263w',d:'单活动最高UV'},{n:'1500+',d:'UGC内容'},{n:'70.1%',d:'618同比'}],
+    projectOrder:['brand-match','jd618','wanshi-daji','xiaohongshu-ugc','rtb-optimization','homepage-analysis','jd-try','jd-health','wanwu-xinxuan','jiuxiang'],
+    projSub:'以活动策划与品牌营销为核心，9个项目覆盖大促运营、UGC增长、投放优化全场景。',
+    skills:[{name:'Marketing Strategy',val:95},{name:'Campaign Planning',val:92},{name:'Brand Marketing',val:85},{name:'Growth / 用户增长',val:88},{name:'Creative Thinking',val:85},{name:'Data Analysis',val:85},{name:'AI Productivity',val:90},{name:'Content Operations',val:88}],
+    skillTags:['活动策划','品牌营销','用户增长','AI运营','数据驱动','UGC增长','AIGC内容','资源位管理','跨部门协同','项目管理'],
+    resumeTarget:'营销运营 / 电商运营'
+  },
+  crossborder: {
+    label:'Cross-border',heroType:'cb',
+    eyebrow:'CROSS-BORDER E-COMMERCE · 2027届秋招',
+    h1:'数据驱动<br><span class="hl">跨境增长</span>',
+    tagline:'Cross-border E-commerce Operator',
+    desc:'B2B+B2C跨境电商双经验，从阿里国际站Listing优化到万物心选广告投放，精通选品、广告优化、内容运营全链路。',
+    role:'跨境电商运营 · B2B + B2C',
+    aboutSub:'B2B+B2C跨境电商双经验，以数据驱动选品与广告优化，精通CTR/CVR/ACOS全指标提升。',
+    aboutText:`<p>天津财经大学国际商务专业2027届，拥有<strong>B2B（阿里国际站）+ B2C（万物心选）</strong>跨境电商双经验。</p><p>核心能力：<strong>广告优化</strong>（CTR 0.3%→1.6%、ACOS<10%）、<strong>选品与品类洞察</strong>（4-8月旺季定位、环保安全核心需求）、<strong>内容运营</strong>（曝光+275%）。</p><p>同时具备平台电商经验（京东CPS 2.45亿GMV），数据驱动思维贯穿全链路。</p>`,
+    aboutSkills:['Amazon Ads','Listing优化','选品分析','广告优化','ACOS控制','品类洞察','竞品拆解','内容运营'],
+    stats:[{n:'1.6%',d:'CTR优化'},{n:'100单',d:'日销翻倍'},{n:'+275%',d:'曝光增长'},{n:'<10%',d:'ACOS'}],
+    projectOrder:['wanwu-xinxuan','jiuxiang','jd-health','jd-try','brand-match','rtb-optimization','homepage-analysis','wanshi-daji','xiaohongshu-ugc','jd618'],
+    projSub:'以广告优化与选品能力为核心，9个项目覆盖跨境运营、广告投放、数据分析全场景。',
+    skills:[{name:'Amazon Ads / 广告优化',val:90},{name:'Listing Optimization',val:92},{name:'Product Research / 选品',val:85},{name:'Category Analysis',val:88},{name:'Data Analysis',val:85},{name:'Content Marketing',val:85},{name:'Excel / WPS',val:90},{name:'SQL',val:65}],
+    skillTags:['Amazon Ads','Listing优化','选品分析','品类洞察','竞品拆解','广告优化','ACOS控制','内容运营','海外社媒','B2B/B2C'],
+    resumeTarget:'跨境电商运营 / 电商运营'
+  },
+  merchant: {
+    label:'Merchant',heroType:'mer',
+    eyebrow:'MERCHANT & INDUSTRY OPERATIONS · 2027届秋招',
+    h1:'商业思维驱动<br><em>商家增长</em>与行业策略',
+    tagline:'Merchant & Industry Operations',
+    desc:'以商家增长和行业策略为核心，CPS行业运营2.45亿GMV，商家分层+爆品打造+跨部门协同全链路实战。',
+    role:'商家运营 · 行业运营',
+    aboutSub:'以商业思维驱动商家增长与行业策略，从分层运营到资源整合，具备全局视角与落地能力。',
+    aboutText:`<p>天津财经大学国际商务专业2027届，4段实习以<strong>商家运营与行业策略</strong>为核心。</p><p>核心能力：<strong>商家分层运营</strong>（KA/中小商家差异化激励、报名率>75%）、<strong>爆品打造</strong>（8W→263W）、<strong>跨部门协同</strong>（ROI 7、CAC -20%）、<strong>招商体系搭建</strong>（5档招商包+打分PK机制）。</p><p>以商业思维拆解业务，从策略制定到项目推进全链路闭环。</p>`,
+    aboutSkills:['商家分层','行业分析','商业策略','招商体系','爆品打造','资源整合','项目管理','数据分析'],
+    stats:[{n:'2.45亿',d:'CPS GMV'},{n:'+16%',d:'同比增速'},{n:'263W',d:'爆品成交'},{n:'ROI 7',d:'跨域协同'}],
+    projectOrder:['jd-health','jd618','brand-match','rtb-optimization','wanshi-daji','homepage-analysis','jd-try','xiaohongshu-ugc','wanwu-xinxuan','jiuxiang'],
+    projSub:'以商业策略与商家增长为核心，9个项目覆盖行业运营、招商体系、投放优化全场景。',
+    skills:[{name:'Merchant Operations',val:92},{name:'Industry Analysis',val:85},{name:'Business Strategy',val:88},{name:'Growth Strategy',val:87},{name:'Project Management',val:85},{name:'Data Analysis',val:85},{name:'Excel / WPS',val:90},{name:'SQL',val:65}],
+    skillTags:['商家分层','CPS运营','爆品打造','行业策略','招商体系','ROI优化','跨部门协同','数据分析','新商运营','品类运营'],
+    resumeTarget:'商家运营 / 行业运营 / 电商运营'
+  }
+};
+
+// ========== EXPERIENCE DATA ==========
+const EXPERIENCES = [
+  {company:'京东 · 试用频道',title:'营销运营实习生',role:'活动策划 / 品类运营 / UGC增长 / 投放策略',time:'2026.03 - 2026.07',tags:['618大促','RTB投放','UGC增长','活动策划'],
+   projects:[
+    {h:'618大促招商与投放策略',p:'设计5档招商包分层体系+前置打分PK机制，钩子品派发达成率115.78%。虚拟金投放策略（预算363.84万）引入UV超预期15万。RTB站内外投放（预算319万），推动站外占比72.3%，UV成本降至0.25元，BigDay单日引流1000万+UV。',m:['618成交2889万 +70.1%','SKU 9.2万 +120.88%','DAU 498万 +130%','RTB达成率270%']},
+    {h:'小红书UGC增长运营',p:'从0搭建"试用体验+小红书发文+京豆激励"内容运营机制，设计分层激励体系，月均2500+用户参与，投稿率60%。',m:['1500+篇UGC','50w+站外曝光','投稿率60%','月均2500+用户']},
+    {h:'五一 & 端午活动策划',p:'独立策划五一出游线上活动，撬动20w份1元钩子品+每日10点抢购机制。端午粽子品类整合营销，参与「吃喝玩乐惊喜日」共建。',m:['五一PV 200w/UV 120w','CTR +15% / CVR +6%','端午UV 263w','成交环比+89%']}
+   ]},
+  {company:'京东健康',title:'CPS行业运营实习生',role:'商家分层 / 爆品孵化 / 跨部门协同 / 数据分析',time:'2025.09 - 2026.02',tags:['CPS运营','商家分层','爆品打造','跨域协同'],
+   projects:[
+    {h:'CPS行业运营 · 活动策划',p:'针对KA与中小商家设置分层激励，按CPS GMV分层，在3个高点（52h）及品牌日设置差异化活动。活动成交2.45亿，同比+16%，超行业大盘9pp。',m:['GMV 2.45亿 +16%','超大盘9pp','新商报名率>75%','单场增量>2000万']},
+    {h:'爆品打造 & 商家运营',p:'筛选60个TOP单品，高点52h佣金翻倍激励，投放值得买/蜜源等站外渠道。联合站内外资源，要求KA/中小商家全周期锁佣。',m:['爆品8W→263W +90%','商家49.6W→6500W','同比+28%','ROI显著']},
+    {h:'跨部门协同 & S+大促',p:'协调京喜及微信域负责人，引入货盘及拉新券，设计"单单奖"激励。协助双十一/年货节S+大促。百亿补贴/微信生态联合营销。',m:['单品订单+3倍','CAC -20%','ROI达7','S+大促GMV +10%']}
+   ]},
+  {company:'万物心选',title:'跨境电商运营实习生（B2C）',role:'品类洞察 / 竞品拆解 / 广告优化 / 内容运营',time:'2024.12 - 2025.08',tags:['B2C跨境','广告优化','内容运营','选品'],
+   projects:[
+    {h:'广告优化 & 爆款打造',p:'通过广告核心指标下钻分析，定位投放预算不足及广告结构老化，调整策略使日销一月内翻倍。分析CTR/CVR定位主图问题，优化后CTR大幅提升。',m:['CTR 0.3%→1.6%','日销翻倍100单','ACOS<10%','CVR 4.5%→7%']},
+    {h:'内容运营 & 品类洞察',p:'洞察时髦宝妈内容偏好，主导重构短视频与图文策略。完成鞋服类目规模/增速/季节性分析，定位4-8月旺季。拆解Top竞品，锁定"环保安全"核心需求。',m:['爆款触达3w+','峰值CTR 40%','曝光+275%','净利率+2.3pct']},
+    {h:'效能优化',p:'分析履约数据，识别仓储成本瓶颈，推动与仓储团队协同优化方案落地。自建高精度广告策略组。',m:['单件成本-2.5元+','营销费比-1-2%','净利率+2.3pct']}
+   ]},
+  {company:'九祥科贸',title:'跨境电商运营实习生（B2B）',role:'Listing优化 / 海外社媒 / B端客户调研',time:'2024.09 - 2024.11',tags:['B2B跨境','阿里国际站','Listing','社媒'],
+   projects:[
+    {h:'Listing优化 & B端客户调研',p:'阿里国际站Listing优化，提升搜索排名与点击率。LinkedIn B端客户调研，海外社媒独立运营。300+用户画像分析。',m:['访客+2w','询盘+20%','曝光+25%','转化+30%','满意度98%']}
+   ]}
+];
+
+// ========== PROJECTS DATA ==========
+const PROJECTS = {
+  'jd-try':{name:'京东试用频道运营',company:'京东 · 试用频道',cat:'strategy',icon:'🏬',desc:'618大促招商+虚拟金投放+RTB优化+UGC增长全链路，618成交2889万同比+70.1%。',stats:['618订单2889万 +70.1%','DAU 498万 +130%','PV 200w'],
+    detail:{h:'京东试用频道 · 营销运营全链路',body:`<p>负责京东试用频道618大促全链路运营，包含招商体系、投放策略、活动策划、内容增长四大模块。</p><h4>招商体系</h4><ul><li>5档招商包分层体系（现金T0/T1+货值T1/T2/T3）</li><li>前置打分PK机制，钩子品达成率115.78%</li><li>8个四场全入选品牌，日均流速1.9倍</li></ul><h4>投放策略</h4><ul><li>虚拟金投放363.84万，UV超预期15万</li><li>RTB站外占比72.3%，UV成本0.25元</li><li>BigDay单日引流1000万+UV</li></ul><h4>成果</h4><ul><li>618成交订单2889万（+70.1%）</li><li>试用SKU 9.2万（+120.88%）</li><li>DAU 498万（+130%）</li></ul>`,metrics:['618成交2889万 +70.1%','SKU 9.2万 +120.88%','DAU 498万 +130%','RTB 270%']}},
+  'jd-health':{name:'京东健康CPS行业运营',company:'京东健康',cat:'strategy',icon:'💊',desc:'CPS行业运营2.45亿GMV，商家分层+爆品孵化+跨域协同，同比+16%超大盘9pp。',stats:['GMV 2.45亿 +16%','爆品263W +90%','ROI 7'],
+    detail:{h:'京东健康 · CPS行业运营',body:`<p>负责京东健康CPS行业运营，覆盖商家分层、活动策划、爆品孵化、跨部门协同全链路。</p><h4>活动策划 & 商家分层</h4><ul><li>按CPS GMV分层，3个高点+品牌日差异化活动</li><li>活动成交2.45亿，+16%，超大盘9pp</li><li>新商报名率>75%，单场增量>2000万</li></ul><h4>爆品打造</h4><ul><li>60个TOP单品，52h佣金翻倍</li><li>花费8W→成交263W，环比+90%，同比+28%</li></ul><h4>跨部门协同</h4><ul><li>协调京喜及微信域，"单单奖"激励</li><li>单品订单+3倍，CAC -20%，ROI 7</li><li>S+大促GMV +10%</li></ul>`,metrics:['GMV 2.45亿 +16%','爆品8W→263W +90%','商家49.6W→6500W','ROI 7','S+ +10%']}},
+  'wanwu-xinxuan':{name:'万物心选跨境电商运营',company:'万物心选（B2C跨境）',cat:'crossborder',icon:'🌍',desc:'B2C跨境鞋服运营，CTR 0.3%→1.6%，日销翻倍，曝光同比+275%。',stats:['CTR 0.3%→1.6%','日销翻倍100单','曝光+275%'],
+    detail:{h:'万物心选 · B2C跨境电商运营',body:`<p>负责万物心选跨境电商鞋服/鞋类类目运营全链路。</p><h4>广告优化 & 爆款</h4><ul><li>广告指标下钻分析，定位预算不足及结构老化</li><li>日销一月内翻倍至100单</li><li>CTR 0.3%→1.6%，CVR 4.5%→7%</li><li>ACOS<10%，降低营销费比1-2%</li></ul><h4>内容 & 品类</h4><ul><li>重构短视频与图文策略，爆款触达3w+</li><li>峰值CTR 40%，曝光+275%</li><li>鞋服类目分析，定位4-8月旺季</li><li>拆解Top竞品，锁定"环保安全"核心需求</li></ul><h4>效能</h4><ul><li>单件成本-2.5元+，净利率+2.3pct</li></ul>`,metrics:['CTR 0.3%→1.6%','日销100单','曝光+275%','ACOS<10%','净利率+2.3pct']}},
+  'jiuxiang':{name:'九祥科贸B2B跨境运营',company:'九祥科贸（B2B跨境）',cat:'crossborder',icon:'🏭',desc:'阿里国际站B2B运营，Listing优化访客+2w，LinkedIn转化+30%，满意度98%。',stats:['访客+2w','询盘+20%','转化+30%'],
+    detail:{h:'九祥科贸 · B2B跨境电商运营',body:`<p>负责九祥科贸阿里国际站B2B跨境电商运营。</p><h4>核心工作</h4><ul><li>Listing优化：访客+2w，询盘+20%，曝光+25%</li><li>LinkedIn B端客户调研，转化+30%</li><li>海外社媒100+条内容，引流10+高匹配客户</li><li>300+用户画像分析，满意度98%</li><li>橡胶制品行业竞品分析报告</li></ul>`,metrics:['访客+2w','询盘+20%','曝光+25%','转化+30%','满意度98%']}},
+  'brand-match':{name:'Brand Match 品牌匹配',company:'京东 · 试用频道',cat:'strategy',icon:'🤝',desc:'618招商品牌匹配策略，5档招商包+前置打分PK，钩子品达成率115.78%。',stats:['达成率115.78%','8个全选品牌','流速1.9x'],
+    detail:{h:'Brand Match · 618招商品牌匹配',body:`<p>京东试用618大促招商体系搭建。</p><h4>招商体系</h4><ul><li>5档招商包分层（现金T0/T1+货值T1/T2/T3）</li><li>前置打分PK（钩子品货值:历史派发:品牌力:加分项=3:0.15:0.2:0.2）</li><li>品牌竞争式报名</li></ul><h4>成果</h4><ul><li>钩子品达成率115.78%</li><li>完成率环比+14pp</li><li>8个全选品牌，日均流速1.9倍</li></ul>`,metrics:['达成率115.78%','完成率+14pp','8个全选品牌','流速1.9倍']}},
+  'wanshi-daji':{name:'万试大集 · 五一活动',company:'京东 · 试用频道',cat:'campaign',icon:'🎪',desc:'独立策划五一出游活动，撬动20w份1元钩子品，PV 200w/UV 120w/8w订单。',stats:['PV 200w','UV 120w','8w订单'],
+    detail:{h:'万试大集 · 五一出游活动',body:`<p>独立策划京东试用五一出游线上活动全流程。</p><h4>策略</h4><ul><li>AI辅助生成活动方案</li><li>撬动20w份1元钩子品</li><li>每日10点抢购机制强化复访</li><li>基于历史数据筛选高效资源位</li><li>联动跨频道资源承接流量</li></ul><h4>成果</h4><ul><li>PV 200万/UV 120万/8万有效订单</li><li>CTR +15%、CVR +6%</li></ul>`,metrics:['PV 200w','UV 120w','8w订单','CTR +15%','CVR +6%']}},
+  'xiaohongshu-ugc':{name:'小红书UGC增长引擎',company:'京东 · 试用频道',cat:'content',icon:'📖',desc:'从0搭建"试用+小红书+京豆激励"闭环，1500+篇UGC，50w+曝光。',stats:['1500+ UGC','50w+曝光','投稿率60%'],
+    detail:{h:'小红书UGC增长引擎',body:`<p>从0搭建UGC内容增长闭环。</p><h4>机制</h4><ul><li>"试用体验+小红书发文+京豆激励"闭环</li><li>"1000京豆基础+阅读量分层激励"</li><li>节点策划话题提升场景匹配</li><li>AI辅助策划话题、生成引导文案</li></ul><h4>成果</h4><ul><li>月均2500+用户参与</li><li>投稿率60%</li><li>1500+篇UGC</li><li>50w+站外曝光</li></ul>`,metrics:['月均2500+用户','投稿率60%','1500+UGC','50w+曝光']}},
+  'rtb-optimization':{name:'RTB投放优化',company:'京东 · 试用频道',cat:'ads',icon:'🎯',desc:'站外CPC 0.08 vs 站内1.46（18倍差），推动站外72.3%，UV成本0.25元。',stats:['UV成本0.25元','站外72.3%','BigDay 1000w+'],
+    detail:{h:'RTB投放优化 · 618站内外策略',body:`<p>京东试用618 RTB站内外投放策略优化，预算319万。</p><h4>策略</h4><ul><li>站外CPC 0.08 vs 站内1.46（18倍差）</li><li>站外占比提升至72.3%</li><li>UV成本降至0.25元</li><li>UV成本+UV转化率组合考核模型</li></ul><h4>成果</h4><ul><li>BigDay单日引流1000万+UV</li><li>RTB整体达成率270%</li><li>单品牌会场平均引流16万+UV</li></ul>`,metrics:['站外CPC 0.08','UV成本0.25元','站外72.3%','BigDay 1000w+','达成率270%']}},
+  'homepage-analysis':{name:'首页资源位分析',company:'京东 · 试用频道',cat:'strategy',icon:'📊',desc:'虚拟金投放策略分析（363.84万），论证吸顶通栏为核心资源位。',stats:['预算363.84w','UV超预期15w','会场CTR+6pp'],
+    detail:{h:'首页资源位分析 · 虚拟金投放',body:`<p>京东试用618虚拟金投放策略分析与资源位效率诊断。</p><h4>分析</h4><ul><li>虚拟金投放363.84万，UV超预期15万</li><li>定义虚拟金为撬动品牌合作的杠杆</li><li>论证吸顶通栏效率超大盘</li><li>产出点位优化：吸顶通栏核心，搜索暗纹放弃，开机屏按门槛</li><li>BigDay会场CTR+6pp，停留时长7倍</li><li>钩子品楼层贡献65%+订单</li><li>渠道四象限模型</li></ul>`,metrics:['预算363.84w','UV超预期15w','会场CTR+6pp','停留7x','钩子品65%+']}},
+  'jd618':{name:'京东618大促运营',company:'京东 · 试用频道',cat:'campaign',icon:'🔥',desc:'618全链路运营，成交2889万同比+70.1%，SKU 9.2万+120.88%。',stats:['订单2889万 +70.1%','SKU +120.88%','DAU +130%'],
+    detail:{h:'京东618大促 · 全链路',body:`<p>京东试用618大促全链路运营，整合招商、投放、活动、内容四大模块。</p><h4>整合策略</h4><ul><li>招商：5档招商包+打分PK，达成率115.78%</li><li>虚拟金363.84万：UV超预期15万</li><li>RTB 319万：站外72.3%，达成率270%</li><li>会场：BigDay CTR+6pp，停留7倍</li><li>渠道四象限：5个高流高转扩量</li></ul><h4>618成果</h4><ul><li>成交订单2889万（+70.1%）</li><li>试用SKU 9.2万（+120.88%）</li><li>DAU 498万（+130%）</li></ul>`,metrics:['订单2889万 +70.1%','SKU +120.88%','DAU +130%','RTB 270%','钩子品115.78%']}}
+};
+
+// ========== INSIGHTS DATA ==========
+const INSIGHTS = [
+  {cat:'Data Analysis',title:'数据驱动运营的三个层次',desc:'从描述性数据到诊断性分析再到预测性优化，运营数据分析不是看数字，而是从数字中找到增长杠杆。',meta:['5 min read','数据分析','方法论']},
+  {cat:'AI + Operations',title:'AI赋能运营：从工具到思维',desc:'AI不是替代运营，而是放大运营能力。从Prompt设计到Workflow自动化，AI是运营人的杠杆。',meta:['4 min read','AI提效','实践']},
+  {cat:'Strategy',title:'大促招商的分层激励设计',desc:'5档招商包+前置打分PK机制，让品牌竞争式报名。好的机制设计能让招商从"求品牌"变成"品牌求你"。',meta:['6 min read','招商策略','618']},
+  {cat:'Cross-border',title:'跨境选品的底层逻辑',desc:'选品不是选商品，而是选需求。从用户画像到竞品矩阵，从季节性到价格带，选品是一套系统方法论。',meta:['5 min read','跨境电商','选品']}
+];
+
+// ========== PROMPTS ==========
+const PROMPTS = {
+  ugc:`<span class="pk">角色</span>: 小红书种草文案专家
+<span class="pk">任务</span>: 为京东试用撰写种草文案
+<span class="pk">产品</span>: <span class="pv">[试用商品名称]</span>
+<span class="pk">目标用户</span>: 25-35岁都市女性，注重性价比
+<span class="pk">要求</span>:
+  1. 标题含emoji，15字以内，制造好奇心
+  2. 正文3-5段，每段2-3句
+  3. 包含真实使用场景和感受
+  4. 结尾引导"上京东搜[商品名]免费试用"
+  5. 生成5种风格: 种草/测评/故事/清单/对比
+<span class="pk">输出</span>: 5条文案，每条含标题+正文+话题标签`,
+  campaign:`<span class="pk">角色</span>: 资深电商活动策划师
+<span class="pk">任务</span>: 生成大促活动方案
+<span class="pk">背景</span>: <span class="pv">[活动节点/品类/预算]</span>
+<span class="pk">要求</span>:
+  1. 活动主题: 结合节点氛围，5字以内
+  2. 货盘结构: 钩子品/利润品/形象品分层
+  3. 机制设计: 每日玩法+复访机制+转化路径
+  4. 资源位策略: 基于历史CTR筛选高效点位
+  5. 输出3套差异化方案供对比
+<span class="pk">输出</span>: 方案名+主题+货盘+机制+资源位+预期KPI`,
+  analysis:`<span class="pk">角色</span>: 电商数据分析师
+<span class="pk">任务</span>: 分析活动数据并输出优化建议
+<span class="pk">数据</span>: <span class="pv">[UV/PV/CTR/CVR/GMV等]</span>
+<span class="pk">分析维度</span>:
+  1. 转化漏斗: 各环节流失率
+  2. 同比环比: 趋势对比
+  3. 归因诊断: 关键影响因素
+  4. 渠道效率: UV成本与转化率
+  5. 优化建议: 3条可执行action
+<span class="pk">输出</span>: 摘要+归因+建议+预期提升`
+};
+
+// ========== STATE ==========
+let curVer='marketing', curFilter='all';
+
+// ========== INIT ==========
+function init(){
+  renderHero(curVer);
+  renderTimeline();
+  renderProjects();
+  renderInsights();
+  renderSkills(curVer);
+  applyVersionContent(curVer);
+  renderPrompt('ugc');
+  initReveal();
+  initNavScroll();
+}
+
+// ========== HERO RENDER ==========
+function renderHero(ver){
+  const v=VERSIONS[ver];
+  const home=document.getElementById('home');
+  if(ver==='marketing'){
+    home.innerHTML=`<div class="hero">
+      <div class="hero-orbs"><div class="hero-orb o1"></div><div class="hero-orb o2"></div></div>
+      <div class="hero-mkt">
+        <div class="eyebrow">${v.eyebrow}</div>
+        <h1>${v.h1}</h1>
+        <p class="tagline">${v.tagline}</p>
+        <p class="desc">${v.desc}</p>
+        <div class="stats">${v.stats.map(s=>`<div class="stat"><div class="n">${s.n}</div><div class="d">${s.d}</div></div>`).join('')}</div>
+        <div class="cta"><a href="#projects" class="btn1">查看项目 →</a><a href="#resume" class="btn2">在线简历</a></div>
+      </div>
+      <div class="hero-scroll">↓ Scroll</div>
+    </div>`;
+  } else if(ver==='crossborder'){
+    home.innerHTML=`<div class="hero-cb">
+      <div class="hero-cb-left">
+        <div class="eyebrow">${v.eyebrow}</div>
+        <h1>${v.h1}</h1>
+        <p class="tagline">${v.tagline}</p>
+        <p class="desc">${v.desc}</p>
+        <div class="cta"><a href="#projects" class="btn1">查看项目 →</a><a href="#resume" class="btn2">简历</a></div>
+      </div>
+      <div class="hero-cb-right">
+        <div class="cb-widget">
+          <div class="cb-widget-title">CTR OPTIMIZATION</div>
+          <div class="cb-metric-row"><span class="cb-metric-val">1.6%</span><span class="cb-metric-change">↑ 433%</span></div>
+          <div class="cb-metric-label">from 0.3% → 1.6%</div>
+          <div class="cb-chart">${[20,30,25,40,55,60,75,90].map(h=>`<div class="cb-bar" style="height:${h}%"></div>`).join('')}</div>
+        </div>
+        <div class="cb-grid-2">
+          <div class="cb-widget">
+            <div class="cb-widget-title">ACOS</div>
+            <div class="cb-gauge"><div class="cb-gauge-inner">9.2%</div></div>
+            <div class="cb-metric-label" style="text-align:center;margin-top:8px">< 10% target</div>
+          </div>
+          <div class="cb-widget">
+            <div class="cb-widget-title">DAILY SALES</div>
+            <div class="cb-metric-row"><span class="cb-metric-val">100</span><span class="cb-metric-change">↑ 2x</span></div>
+            <div class="cb-metric-label">orders/day</div>
+            <div class="cb-chart">${[30,35,40,50,55,70,85,100].map(h=>`<div class="cb-bar" style="height:${h}%"></div>`).join('')}</div>
+          </div>
+        </div>
+        <div class="cb-widget">
+          <div class="cb-widget-title">EXPOSURE GROWTH</div>
+          <div class="cb-metric-row"><span class="cb-metric-val">+275%</span><span class="cb-metric-change">YoY</span></div>
+          <div class="cb-chart">${[40,45,50,60,70,80,90,100].map(h=>`<div class="cb-bar" style="height:${h}%;background:linear-gradient(to top,#06b6d4,#3b82f6)"></div>`).join('')}</div>
+        </div>
+      </div>
+    </div>`;
+    // animate bars after render
+    setTimeout(()=>{
+      document.querySelectorAll('.cb-bar').forEach(b=>{const h=b.style.height;b.style.height='0';setTimeout(()=>b.style.height=h,50)});
+    },100);
+  } else if(ver==='merchant'){
+    home.innerHTML=`<div class="hero-mer">
+      <div class="eyebrow">${v.eyebrow}</div>
+      <h1>${v.h1}</h1>
+      <p class="tagline">${v.tagline}</p>
+      <p class="desc">${v.desc}</p>
+      <div class="stats">${v.stats.map(s=>`<div class="stat"><div class="n">${s.n}</div><div class="d">${s.d}</div></div>`).join('')}</div>
+      <div class="cta"><a href="#projects" class="btn1">查看项目 →</a><a href="#resume" class="btn2">在线简历</a></div>
+      <div class="hero-mer-framework">
+        <div class="hero-mer-fw-item"><div class="hero-mer-fw-icon">📊</div><div class="hero-mer-fw-label">行业分析</div><div class="hero-mer-fw-sub">Industry Analysis</div></div>
+        <div class="hero-mer-fw-item"><div class="hero-mer-fw-icon">🤝</div><div class="hero-mer-fw-label">商家增长</div><div class="hero-mer-fw-sub">Merchant Growth</div></div>
+        <div class="hero-mer-fw-item"><div class="hero-mer-fw-icon">🎯</div><div class="hero-mer-fw-label">策略制定</div><div class="hero-mer-fw-sub">Strategy</div></div>
+        <div class="hero-mer-fw-item"><div class="hero-mer-fw-icon">🔗</div><div class="hero-mer-fw-label">资源整合</div><div class="hero-mer-fw-sub">Integration</div></div>
+      </div>
+    </div>`;
+  }
+  // fade in
+  home.querySelector('.hero,.hero-cb,.hero-mer').classList.add('fade-in');
+}
+
+// ========== VERSION SWITCH ==========
+function switchVersion(ver){
+  if(ver===curVer) return;
+  curVer=ver;
+  document.documentElement.setAttribute('data-theme',ver);
+  document.querySelectorAll('#verSwitch button').forEach(b=>b.classList.toggle('active',b.dataset.ver===ver));
+  renderHero(ver);
+  applyVersionContent(ver);
+  renderProjects();
+  renderSkills(ver);
+  // smooth scroll to top
+  window.scrollTo({top:0,behavior:'smooth'});
+  // re-init reveal for new content
+  setTimeout(initReveal,100);
+}
+
+function applyVersionContent(ver){
+  const v=VERSIONS[ver];
+  document.getElementById('aboutSub').textContent=v.aboutSub;
+  document.getElementById('aboutRole').textContent=v.role;
+  document.getElementById('aboutText').innerHTML=v.aboutText;
+  document.getElementById('aboutSkills').innerHTML=v.aboutSkills.map(s=>`<span class="st">${s}</span>`).join('');
+  document.getElementById('projSub').textContent=v.projSub;
+  document.getElementById('resumeTarget').textContent=v.resumeTarget;
+}
+
+// ========== TIMELINE ==========
+function renderTimeline(){
+  document.getElementById('timeline').innerHTML=EXPERIENCES.map(exp=>`
+    <div class="tl-item reveal" onclick="this.classList.toggle('expanded')">
+      <div class="tl-header">
+        <div class="tl-left">
+          <div class="tl-company">${exp.company}</div>
+          <div class="tl-title">${exp.title}</div>
+          <div class="tl-role">${exp.role}</div>
+          <div class="tl-tags">${exp.tags.map(t=>`<span class="tl-tag">${t}</span>`).join('')}</div>
+        </div>
+        <div class="tl-time">${exp.time}</div>
+      </div>
+      <div class="tl-detail"><div class="tl-detail-inner">
+        ${exp.projects.map(p=>`<div class="tl-project"><h5>${p.h}</h5><p>${p.p}</p><div class="tl-metrics">${p.m.map(m=>`<span class="tl-metric">${m}</span>`).join('')}</div></div>`).join('')}
+      </div></div>
+      <p class="tl-hint">▼ 点击展开详情</p>
+    </div>`).join('');
+  initReveal();
+}
+
+// ========== PROJECTS ==========
+function renderProjects(){
+  const order=VERSIONS[curVer].projectOrder;
+  let html='';
+  order.forEach(key=>{
+    const p=PROJECTS[key]; if(!p) return;
+    if(curFilter!=='all'&&p.cat!==curFilter) return;
+    html+=`<div class="proj-card reveal" onclick="openModal('${key}')">
+      <div class="pc-banner"><span class="pc-icon">${p.icon}</span><span class="pc-cat">${p.cat.toUpperCase()}</span></div>
+      <div class="pc-body">
+        <div class="pc-name">${p.name}</div>
+        <div class="pc-company">${p.company}</div>
+        <p class="pc-desc">${p.desc}</p>
+        <div class="pc-stats">${p.stats.map(s=>`<span class="pc-stat">${s}</span>`).join('')}</div>
+        <div class="pc-arrow">查看详情 →</div>
+      </div>
+    </div>`;
+  });
+  if(!html) html='<p style="grid-column:1/-1;text-align:center;color:var(--ink3);padding:40px">该分类下暂无项目</p>';
+  document.getElementById('projGrid').innerHTML=html;
+  initReveal();
+}
+
+function filterProjects(cat,btn){
+  curFilter=cat;
+  document.querySelectorAll('.pf-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProjects();
+}
+
+function openModal(key){
+  const p=PROJECTS[key], d=p.detail;
+  document.getElementById('modalContent').innerHTML=`<h2>${d.h}</h2><p class="mc-company">${p.company}</p><div class="mc-body">${d.body}</div><div class="mc-metrics">${d.metrics.map(m=>`<span class="mm">${m}</span>`).join('')}</div>`;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('show')}
+
+// ========== INSIGHTS ==========
+function renderInsights(){
+  document.getElementById('insightsGrid').innerHTML=INSIGHTS.map(i=>`
+    <div class="insight-card reveal" onclick="openModal_insight('${i.title}')">
+      <div class="ic-cat">${i.cat}</div>
+      <h3>${i.title}</h3>
+      <p>${i.desc}</p>
+      <div class="ic-meta">${i.meta.map(m=>`<span>${m}</span>`).join('')}</div>
+    </div>`).join('');
+  initReveal();
+}
+function openModal_insight(title){
+  const i=INSIGHTS.find(x=>x.title===title);
+  document.getElementById('modalContent').innerHTML=`<h2>${i.title}</h2><p class="mc-company">${i.cat}</p><div class="mc-body"><p>${i.desc}</p><p style="margin-top:12px;color:var(--ink3);font-size:13px">完整文章即将上线，敬请期待。</p></div>`;
+  document.getElementById('modalOverlay').classList.add('show');
+}
+
+// ========== SKILLS ==========
+function renderSkills(ver){
+  const v=VERSIONS[ver];
+  document.getElementById('skillsGrid').innerHTML=v.skills.map(s=>`
+    <div><div class="skill-bar">
+      <div class="skill-head"><span class="skill-name">${s.name}</span><span class="skill-val">${s.val}%</span></div>
+      <div class="skill-track"><div class="skill-fill" style="width:${s.val}%"></div></div>
+    </div></div>`).join('');
+  document.getElementById('skillsTags').innerHTML=v.skillTags.map(t=>`<span class="st">${t}</span>`).join('');
+  // animate skill bars
+  setTimeout(()=>{document.querySelectorAll('.skill-fill').forEach(f=>{const w=f.style.width;f.style.width='0';setTimeout(()=>f.style.width=w,100)})},100);
+}
+
+// ========== PROMPTS ==========
+function renderPrompt(key){document.getElementById('promptBox').innerHTML=PROMPTS[key]}
+function switchPrompt(key,btn){document.querySelectorAll('.prompt-tab').forEach(t=>t.classList.remove('active'));btn.classList.add('active');renderPrompt(key)}
+
+// ========== NAV SCROLL ==========
+function initNavScroll(){
+  const secs=['home','about','experience','projects','ailab','insights','resume','contact'];
+  document.querySelectorAll('.nav-links a').forEach(a=>{
+    a.addEventListener('click',e=>{
+      e.preventDefault();
+      document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('active'));
+      a.classList.add('active');
+      document.getElementById(a.getAttribute('href').slice(1)).scrollIntoView({behavior:'smooth'});
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+  window.addEventListener('scroll',()=>{
+    let cur='home';
+    secs.forEach(id=>{const el=document.getElementById(id);if(el&&el.offsetTop<=window.scrollY+80)cur=id});
+    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  });
+}
+
+// ========== REVEAL ==========
+function initReveal(){
+  const ob=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:0.1});
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>ob.observe(el));
+}
+
+// ========== KEYBOARD ==========
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+
+// ========== START ==========
+init();
+</script>
+</body>
+</html>
