@@ -452,7 +452,7 @@ section{overflow:hidden}
 .contact-banner h3{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;position:relative;z-index:1}
 .contact-banner p{color:rgba(255,255,255,.85);font-size:14px;position:relative;z-index:1}
 .ai-card{position:relative;overflow:hidden}
-.ai-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--grad);opacity:.06;transition:height .4s ease}
+.ai-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--grad);opacity:.06;transition:height .4s ease;pointer-events:none;z-index:0}
 .ai-card:hover::after{height:100%}
 .ai-card>*{position:relative;z-index:1}
 .skill-fill{position:relative;overflow:hidden}
