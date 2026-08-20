@@ -384,6 +384,52 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
   .hero-mer-framework{flex-wrap:wrap;gap:12px}
   .hero-mer-fw-item:not(:last-child)::after{display:none}
 }
+
+/* ================================ VISUAL ENHANCEMENTS ================================ */
+.sec-title{position:relative}
+.sec-title::after{content:'';display:block;width:52px;height:4px;border-radius:2px;background:var(--grad);margin-top:14px;transition:width .5s ease}
+section:hover .sec-title::after{width:84px}
+section{overflow:hidden}
+.sec-blob{position:absolute;pointer-events:none;z-index:0;border-radius:50%;filter:blur(70px);opacity:.12}
+.sec-blob.tr{top:-100px;right:-80px;width:320px;height:320px;background:var(--primary)}
+.sec-blob.bl{bottom:-80px;left:-60px;width:280px;height:280px;background:var(--accent)}
+.sec-blob.tc{top:-50px;left:35%;width:200px;height:200px;background:var(--accent2)}
+.container{position:relative;z-index:1}
+.timeline-wrap{position:relative;padding-left:36px;margin-top:8px}
+.timeline-wrap::before{content:'';position:absolute;left:13px;top:24px;bottom:24px;width:2px;background:linear-gradient(to bottom,var(--primary) 0%,var(--accent) 50%,var(--primary) 100%);border-radius:1px;opacity:.25}
+.tl-item{position:relative}
+.tl-item::before{content:'';position:absolute;left:-29px;top:26px;width:14px;height:14px;border-radius:50%;background:var(--card);border:3px solid var(--primary);z-index:2;transition:all .3s}
+.tl-item:hover::before{background:var(--primary);transform:scale(1.25);box-shadow:0 0 0 6px rgba(139,92,246,.1)}
+.tl-item.expanded::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 6px rgba(236,72,153,.15)}
+.proj-card.featured{grid-column:span 2;flex-direction:row;align-items:stretch}
+.proj-card.featured .pc-banner{height:auto;min-height:100%;width:160px;flex-direction:column;justify-content:center;align-items:center;padding:24px 16px;gap:12px}
+.proj-card.featured .pc-icon{font-size:44px}
+.proj-card.featured .pc-cat{position:static}
+.proj-card.featured .pc-body{padding:24px;flex:1}
+.proj-card.featured .pc-name{font-size:18px}
+.proj-card.featured .pc-desc{font-size:14px}
+@media(max-width:900px){.proj-card.featured{grid-column:span 1;flex-direction:column}.proj-card.featured .pc-banner{width:100%;height:60px;flex-direction:row}}
+.about-card{position:relative;overflow:hidden}
+.about-card::after{content:'';position:absolute;top:0;right:0;width:120px;height:120px;background:var(--grad);opacity:.06;border-radius:50%;transform:translate(35px,-35px);transition:transform .5s}
+.about-card:hover::after{transform:translate(20px,-20px) scale(1.2)}
+.contact-banner{background:var(--grad);border-radius:var(--radius);padding:36px 40px;text-align:center;margin-bottom:24px;position:relative;overflow:hidden}
+.contact-banner::before{content:'';position:absolute;top:-30px;right:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1)}
+.contact-banner::after{content:'';position:absolute;bottom:-40px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.08)}
+.contact-banner h3{font-size:22px;font-weight:900;color:#fff;margin-bottom:6px;position:relative;z-index:1}
+.contact-banner p{color:rgba(255,255,255,.85);font-size:14px;position:relative;z-index:1}
+.ai-card{position:relative;overflow:hidden}
+.ai-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:0;background:var(--grad);opacity:.06;transition:height .4s ease}
+.ai-card:hover::after{height:100%}
+.ai-card>*{position:relative;z-index:1}
+.skill-fill{position:relative;overflow:hidden}
+.skill-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.35) 50%,transparent 100%);animation:shimmer 2.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+.insight-card .ic-num{position:absolute;top:12px;right:16px;font-size:40px;font-weight:900;color:var(--bg2);font-family:var(--font-mono);line-height:1;z-index:0;transition:color .3s}
+.insight-card:hover .ic-num{color:var(--bg2)}
+.insight-card>*:not(.ic-num){position:relative;z-index:1}
+.pc-banner{transition:all .3s}
+.proj-card:hover .pc-banner{filter:brightness(1.1)}
+
 </style>
 </head>
 <body>
@@ -416,6 +462,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 
 <!-- ===== ABOUT ===== -->
 <section id="about">
+  <div class="sec-blob tr"></div><div class="sec-blob bl"></div>
   <div class="container">
     <div class="sec-label reveal">About</div>
     <h2 class="sec-title reveal">关于我</h2>
@@ -474,6 +521,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 
 <!-- ===== PROJECTS ===== -->
 <section id="projects">
+  <div class="sec-blob tc"></div><div class="sec-blob bl"></div>
   <div class="container">
     <div class="sec-label reveal">Projects</div>
     <h2 class="sec-title reveal">项目作品库</h2>
@@ -515,6 +563,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 
 <!-- ===== INSIGHTS ===== -->
 <section id="insights">
+  <div class="sec-blob tr"></div>
   <div class="container">
     <div class="sec-label reveal">Insights</div>
     <h2 class="sec-title reveal">运营思考</h2>
@@ -525,6 +574,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 
 <!-- ===== SKILLS ===== -->
 <section id="skills" style="background:var(--bg2)">
+  <div class="sec-blob bl"></div>
   <div class="container">
     <div class="sec-label reveal">Skills</div>
     <h2 class="sec-title reveal">技能矩阵</h2>
@@ -536,6 +586,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 
 <!-- ===== RESUME ===== -->
 <section id="resume">
+  <div class="sec-blob tr"></div>
   <div class="container">
     <div class="sec-label reveal">Resume</div>
     <h2 class="sec-title reveal">在线简历</h2>
@@ -560,6 +611,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
     <div class="sec-label reveal">Contact</div>
     <h2 class="sec-title reveal">联系方式</h2>
     <p class="sec-sub reveal">欢迎随时联系，期待与您交流运营机会。</p>
+    <div class="contact-banner reveal"><h3>让我们一起创造增长 🚀</h3><p>4段实习 · 2.45亿GMV · 9个项目 · AI赋能运营</p></div>
     <div class="contact-grid">
       <a href="mailto:feng13207649343@163.com" class="contact-card reveal"><div class="cc-icon">📧</div><div class="cc-label">Email</div><div class="cc-value">feng13207649343@163.com</div></a>
       <a href="tel:13207649343" class="contact-card reveal"><div class="cc-icon">📱</div><div class="cc-label">Phone</div><div class="cc-value">132 0764 9343</div></a>
@@ -844,7 +896,7 @@ function applyVersionContent(ver){
 
 // ========== TIMELINE ==========
 function renderTimeline(){
-  document.getElementById('timeline').innerHTML=EXPERIENCES.map(exp=>`
+  document.getElementById('timeline').innerHTML='<div class="timeline-wrap">'+EXPERIENCES.map(exp=>`
     <div class="tl-item reveal" onclick="this.classList.toggle('expanded')">
       <div class="tl-header">
         <div class="tl-left">
@@ -859,7 +911,7 @@ function renderTimeline(){
         ${exp.projects.map(p=>`<div class="tl-project"><h5>${p.h}</h5><p>${p.p}</p><div class="tl-metrics">${p.m.map(m=>`<span class="tl-metric">${m}</span>`).join('')}</div></div>`).join('')}
       </div></div>
       <p class="tl-hint">▼ 点击展开详情</p>
-    </div>`).join('');
+    </div>`).join('')+'</div>';
   initReveal();
 }
 
@@ -867,10 +919,12 @@ function renderTimeline(){
 function renderProjects(){
   const order=VERSIONS[curVer].projectOrder;
   let html='';
+  let _idx=0;
   order.forEach(key=>{
     const p=PROJECTS[key]; if(!p) return;
     if(curFilter!=='all'&&p.cat!==curFilter) return;
-    html+=`<div class="proj-card reveal" onclick="openModal('${key}')">
+    const _feat=_idx===0?' featured':''; _idx++;
+    html+=`<div class="proj-card reveal${_feat}" onclick="openModal('${key}')">
       <div class="pc-banner"><span class="pc-icon">${p.icon}</span><span class="pc-cat">${p.cat.toUpperCase()}</span></div>
       <div class="pc-body">
         <div class="pc-name">${p.name}</div>
@@ -904,6 +958,7 @@ function closeModal(){document.getElementById('modalOverlay').classList.remove('
 function renderInsights(){
   document.getElementById('insightsGrid').innerHTML=INSIGHTS.map(i=>`
     <div class="insight-card reveal" onclick="openModal_insight('${i.title}')">
+      <div class="ic-num">0${INSIGHTS.indexOf(i)+1}</div>
       <div class="ic-cat">${i.cat}</div>
       <h3>${i.title}</h3>
       <p>${i.desc}</p>
