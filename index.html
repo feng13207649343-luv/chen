@@ -280,7 +280,7 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 /* ================================
    AI LAB
    ================================ */
-.ai-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.ai-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
 .ai-card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-card);border-top:4px solid var(--primary);transition:all var(--transition)}
 [data-theme="crossborder"] .ai-card{border-top:none;border-left:4px solid var(--primary)}
 .ai-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
@@ -547,7 +547,9 @@ section{overflow:hidden}
     <div class="ai-grid">
       <div class="ai-card reveal"><div class="ai-icon">⚙️</div><h3>AI 自动化工作流</h3><p>基于AI Agent构建自动化工作流，批量查询SKU促销信息并自动判断入券状态，替代人工逐条查询，效率提升10倍。</p><div class="ai-tags"><span>SKU批量查询</span><span>入券判断</span><span>100%自动化</span></div></div>
       <div class="ai-card reveal"><div class="ai-icon">🎨</div><h3>AIGC 内容生产</h3><p>使用Midjourney生成场景化内容，AI辅助文案产出50+套/小时，5种风格切换，80%可直接采用率，素材复用率提升3倍。</p><div class="ai-tags"><span>Midjourney</span><span>种草文案</span><span>AB测试</span></div></div>
-      <div class="ai-card reveal"><div class="ai-icon">📊</div><h3>AI 数据分析</h3><p>基于真实活动数据，AI辅助分析转化趋势、归因诊断、输出优化建议。自动洞察CTR/CVR提升归因，ROI达33:1。</p><div class="ai-tags"><span>趋势分析</span><span>归因诊断</span><span>优化建议</span></div></div>
+<div class="ai-tags"><span>趋势分析</span><span>归因诊断</span><span>优化建议</span></div></div>
+      <div class="ai-card reveal"><div class="ai-icon">🔍</div><h3>AI 资源位自动审核</h3><p>Chrome CDP自动化审核试用频道资源位素材：识别待审核资源位→定位场次→筛选未审核素材→PIL尺寸校验+AI视觉审核。登录态检测，HTML表格弹窗报告。定时任务每日9:00/20:00自动执行。</p><div class="ai-tags"><span>CDP自动化</span><span>PIL+视觉审核</span><span>定时任务</span><span>HTML报告</span></div></div>
+      <div class="ai-card reveal"><div class="ai-icon">📡</div><h3>AI 试用营销热点雷达</h3><p>多平台热搜实时抓取（百度30条/B站20条/头条20条），结合JD试用真实货盘CDP数据（活动6万+/SKU 6万+/成交52万单），自动生成「热点→消费场景→用户需求→货盘→试用玩法→品牌招商→流量承接」营销机会日报。</p><div class="ai-tags"><span>热搜抓取</span><span>CDP货盘数据</span><span>日报生成</span><span>数据驱动</span></div></div>
     </div>
     <div class="prompt-showcase reveal">
       <h3>💡 Prompt 实践案例</h3>
