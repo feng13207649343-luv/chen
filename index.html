@@ -287,7 +287,41 @@ section{padding:90px 24px 60px;scroll-margin-top:60px;position:relative}
 .ai-card .ai-icon{font-size:26px;margin-bottom:10px}
 .ai-card h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:6px;font-family:var(--font-heading)}
 .ai-card p{font-size:13px;color:var(--ink2);line-height:1.6;margin-bottom:10px}
-.ai-card .ai-tags{display:flex;gap:6px;flex-wrap:wrap}
+.ai-card .ai-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+/* ================================ AI LAB FLOWCHARTS ================================ */
+.ai-card{display:flex;flex-direction:column}
+.ai-flow{margin:10px 0 12px;padding:12px;background:var(--bg);border-radius:var(--radius-sm);position:relative;overflow:hidden}
+.ai-flow::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;background:var(--grad);opacity:.4}
+.ai-flow-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.ai-flow-step{padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;white-space:nowrap;transition:all .3s}
+.ai-flow-step.s1{background:var(--primary);color:#fff}
+.ai-flow-step.s2{background:var(--primary-light);color:#fff}
+.ai-flow-step.s3{background:var(--accent);color:#fff}
+.ai-flow-step.s4{background:var(--accent2);color:#fff}
+.ai-flow-step.s5{background:var(--primary-dark);color:#fff}
+.ai-flow-arrow{font-size:10px;color:var(--ink3);font-weight:700}
+.ai-metrics{display:flex;gap:8px;margin:8px 0;flex-wrap:wrap}
+.ai-metric{text-align:center;flex:1;min-width:60px;background:var(--bg2);border-radius:var(--radius-sm);padding:8px 6px}
+.ai-metric .amn{font-size:18px;font-weight:900;color:var(--primary);font-family:var(--font-mono);line-height:1.2}
+.ai-metric .amd{font-size:9px;color:var(--ink3);margin-top:2px;font-weight:600}
+.ai-gauge-row{display:flex;align-items:center;gap:10px;margin:8px 0}
+.ai-gauge{width:50px;height:50px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;color:#fff;font-family:var(--font-mono)}
+.ai-gauge-label{font-size:11px;color:var(--ink2);font-weight:600}
+.ai-bars{display:flex;align-items:flex-end;gap:3px;height:40px;margin:8px 0}
+.ai-bar{flex:1;border-radius:3px 3px 0 0;background:var(--grad);transition:height .5s ease;min-height:4px}
+.ai-chart-box{background:var(--bg2);border-radius:8px;padding:10px;margin:8px 0}
+.ai-radar{display:flex;flex-direction:column;gap:5px;margin:8px 0}
+.ai-radar-item{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:600;color:var(--ink2)}
+.ai-radar-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ai-radar-bar{height:6px;border-radius:3px;flex:1;overflow:hidden;background:var(--bg2)}
+.ai-radar-fill{height:100%;border-radius:3px}
+.ai-pipeline{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.ai-pipe-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--bg2);border-radius:8px;font-size:11px;font-weight:600;color:var(--ink2);transition:all .3s}
+.ai-pipe-item:hover{background:var(--bg2);transform:translateX(4px)}
+.ai-pipe-num{width:20px;height:20px;border-radius:50%;background:var(--grad);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:900;flex-shrink:0}
+.ai-pipe-arrow{text-align:center;font-size:12px;color:var(--ink3);line-height:1}
+.ai-clock{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;background:var(--bg2);font-size:11px;font-weight:700;color:var(--primary);font-family:var(--font-mono)}
+
 .ai-card .ai-tags span{padding:3px 10px;border-radius:6px;font-size:11px;font-weight:600;background:var(--bg2);color:var(--primary);font-family:var(--font-mono)}
 .prompt-showcase{margin-top:28px;background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow-card)}
 .prompt-showcase h3{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:14px;font-family:var(--font-heading)}
@@ -545,11 +579,135 @@ section{overflow:hidden}
     <h2 class="sec-title reveal">AI 运营实验室</h2>
     <p class="sec-sub reveal">AI不是噱头，而是真正帮助提升运营效率的杠杆。从内容生成到流程自动化，探索AI赋能电商运营的实践路径。</p>
     <div class="ai-grid">
-      <div class="ai-card reveal"><div class="ai-icon">⚙️</div><h3>AI 自动化工作流</h3><p>基于AI Agent构建自动化工作流，批量查询SKU促销信息并自动判断入券状态，替代人工逐条查询，效率提升10倍。</p><div class="ai-tags"><span>SKU批量查询</span><span>入券判断</span><span>100%自动化</span></div></div>
-      <div class="ai-card reveal"><div class="ai-icon">🎨</div><h3>AIGC 内容生产</h3><p>使用Midjourney生成场景化内容，AI辅助文案产出50+套/小时，5种风格切换，80%可直接采用率，素材复用率提升3倍。</p><div class="ai-tags"><span>Midjourney</span><span>种草文案</span><span>AB测试</span></div></div>
-<div class="ai-tags"><span>趋势分析</span><span>归因诊断</span><span>优化建议</span></div></div>
-      <div class="ai-card reveal"><div class="ai-icon">🔍</div><h3>AI 资源位自动审核</h3><p>Chrome CDP自动化审核试用频道资源位素材：识别待审核资源位→定位场次→筛选未审核素材→PIL尺寸校验+AI视觉审核。登录态检测，HTML表格弹窗报告。定时任务每日9:00/20:00自动执行。</p><div class="ai-tags"><span>CDP自动化</span><span>PIL+视觉审核</span><span>定时任务</span><span>HTML报告</span></div></div>
-      <div class="ai-card reveal"><div class="ai-icon">📡</div><h3>AI 试用营销热点雷达</h3><p>多平台热搜实时抓取（百度30条/B站20条/头条20条），结合JD试用真实货盘CDP数据（活动6万+/SKU 6万+/成交52万单），自动生成「热点→消费场景→用户需求→货盘→试用玩法→品牌招商→流量承接」营销机会日报。</p><div class="ai-tags"><span>热搜抓取</span><span>CDP货盘数据</span><span>日报生成</span><span>数据驱动</span></div></div>
+      <!-- Card 1: 自动化工作流 -->
+      <div class="ai-card reveal">
+        <div class="ai-icon">⚙️</div>
+        <h3>AI 自动化工作流</h3>
+        <p>基于AI Agent构建自动化工作流，批量查询SKU促销信息并自动判断入券状态，替代人工逐条查询，效率提升10倍。</p>
+        <div class="ai-flow">
+          <div class="ai-flow-row">
+            <span class="ai-flow-step s1">SKU列表</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s2">批量查询</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s3">入券判断</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s4">✅结果</span>
+          </div>
+        </div>
+        <div class="ai-metrics">
+          <div class="ai-metric"><div class="amn">10x</div><div class="amd">效率提升</div></div>
+          <div class="ai-metric"><div class="amn">100%</div><div class="amd">自动化率</div></div>
+          <div class="ai-metric"><div class="amn">0</div><div class="amd">人工干预</div></div>
+        </div>
+        <div class="ai-tags"><span>SKU批量查询</span><span>入券判断</span><span>100%自动化</span></div>
+      </div>
+
+      <!-- Card 2: AIGC 内容生产 -->
+      <div class="ai-card reveal">
+        <div class="ai-icon">🎨</div>
+        <h3>AIGC 内容生产</h3>
+        <p>使用Midjourney生成场景化内容，AI辅助文案产出50+套/小时，5种风格切换，80%可直接采用率，素材复用率提升3倍。</p>
+        <div class="ai-flow">
+          <div class="ai-flow-row">
+            <span class="ai-flow-step s1">关键词</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s2">MJ生成</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s3">AI文案</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s4">5风格</span>
+          </div>
+        </div>
+        <div class="ai-metrics">
+          <div class="ai-metric"><div class="amn">50+</div><div class="amd">套/小时</div></div>
+          <div class="ai-metric"><div class="amn">80%</div><div class="amd">采用率</div></div>
+          <div class="ai-metric"><div class="amn">3x</div><div class="amd">复用率</div></div>
+        </div>
+        <div class="ai-bars">
+          <div class="ai-bar" style="height:30%"></div>
+          <div class="ai-bar" style="height:45%"></div>
+          <div class="ai-bar" style="height:55%"></div>
+          <div class="ai-bar" style="height:70%"></div>
+          <div class="ai-bar" style="height:85%"></div>
+          <div class="ai-bar" style="height:100%"></div>
+        </div>
+        <div class="ai-tags"><span>Midjourney</span><span>种草文案</span><span>AB测试</span></div>
+      </div>
+
+      <!-- Card 3: AI 数据分析 -->
+      <div class="ai-card reveal">
+        <div class="ai-icon">📊</div>
+        <h3>AI 数据分析</h3>
+        <p>基于真实活动数据，AI辅助分析转化趋势、归因诊断、输出优化建议。自动洞察CTR/CVR提升归因，ROI达33:1。</p>
+        <div class="ai-chart-box">
+          <div style="font-size:10px;font-weight:700;color:var(--ink3);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px">转化漏斗</div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;width:42px;color:var(--ink2);font-weight:600">曝光</span><div style="height:18px;border-radius:4px;background:var(--grad);width:100%"></div><span style="font-size:10px;color:var(--primary);font-weight:700;width:36px">100%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;width:42px;color:var(--ink2);font-weight:600">点击</span><div style="height:18px;border-radius:4px;background:var(--grad);width:35%"></div><span style="font-size:10px;color:var(--primary);font-weight:700;width:36px">35%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;width:42px;color:var(--ink2);font-weight:600">转化</span><div style="height:18px;border-radius:4px;background:var(--grad);width:8%"></div><span style="font-size:10px;color:var(--primary);font-weight:700;width:36px">8%</span></div>
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;width:42px;color:var(--ink2);font-weight:600">复购</span><div style="height:18px;border-radius:4px;background:var(--grad);width:3%"></div><span style="font-size:10px;color:var(--primary);font-weight:700;width:36px">3%</span></div>
+          </div>
+        </div>
+        <div class="ai-metrics">
+          <div class="ai-metric"><div class="amn">33:1</div><div class="amd">ROI</div></div>
+          <div class="ai-metric"><div class="amn">+6pp</div><div class="amd">CTR提升</div></div>
+        </div>
+        <div class="ai-tags"><span>趋势分析</span><span>归因诊断</span><span>优化建议</span></div>
+      </div>
+
+      <!-- Card 4: AI 资源位自动审核 -->
+      <div class="ai-card reveal">
+        <div class="ai-icon">🔍</div>
+        <h3>AI 资源位自动审核</h3>
+        <p>Chrome CDP自动化审核试用频道资源位素材，定时任务每日自动执行，HTML表格弹窗报告。</p>
+        <div class="ai-pipeline">
+          <div class="ai-pipe-item"><div class="ai-pipe-num">1</div>识别待审核资源位</div>
+          <div class="ai-pipe-arrow">↓</div>
+          <div class="ai-pipe-item"><div class="ai-pipe-num">2</div>定位场次 & 筛选素材</div>
+          <div class="ai-pipe-arrow">↓</div>
+          <div class="ai-pipe-item"><div class="ai-pipe-num">3</div>PIL尺寸校验 + AI视觉审核</div>
+          <div class="ai-pipe-arrow">↓</div>
+          <div class="ai-pipe-item"><div class="ai-pipe-num">4</div>HTML报告弹窗通知</div>
+        </div>
+        <div class="ai-metrics">
+          <div class="ai-metric"><div class="amn">4步</div><div class="amd">全流程</div></div>
+          <div class="ai-metric"><div class="amn">3位</div><div class="amd">资源位</div></div>
+          <div class="ai-metric"><div class="amn">2次</div><div class="amd">每日</div></div>
+        </div>
+        <div style="margin:6px 0"><span class="ai-clock">⏰ 09:00 / 20:00 自动执行</span></div>
+        <div class="ai-tags"><span>CDP自动化</span><span>PIL+视觉审核</span><span>HTML报告</span></div>
+      </div>
+
+      <!-- Card 5: AI 试用营销热点雷达 -->
+      <div class="ai-card reveal">
+        <div class="ai-icon">📡</div>
+        <h3>AI 试用营销热点雷达</h3>
+        <p>多平台热搜实时抓取，结合JD试用真实货盘CDP数据，自动生成营销机会日报。</p>
+        <div class="ai-flow">
+          <div class="ai-flow-row">
+            <span class="ai-flow-step s1">热搜抓取</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s2">CDP货盘</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s3">场景匹配</span>
+            <span class="ai-flow-arrow">→</span>
+            <span class="ai-flow-step s4">日报</span>
+          </div>
+        </div>
+        <div class="ai-radar">
+          <div class="ai-radar-item"><div class="ai-radar-dot" style="background:#4285f4"></div><span style="width:28px">百度</span><div class="ai-radar-bar"><div class="ai-radar-fill" style="width:100%;background:#4285f4"></div></div><span style="color:var(--primary);font-weight:700;width:28px">30条</span></div>
+          <div class="ai-radar-item"><div class="ai-radar-dot" style="background:#fb7299"></div><span style="width:28px">B站</span><div class="ai-radar-bar"><div class="ai-radar-fill" style="width:67%;background:#fb7299"></div></div><span style="color:var(--primary);font-weight:700;width:28px">20条</span></div>
+          <div class="ai-radar-item"><div class="ai-radar-dot" style="background:#ff6600"></div><span style="width:28px">头条</span><div class="ai-radar-bar"><div class="ai-radar-fill" style="width:67%;background:#ff6600"></div></div><span style="color:var(--primary);font-weight:700;width:28px">20条</span></div>
+          <div class="ai-radar-item"><div class="ai-radar-dot" style="background:var(--primary)"></div><span style="width:28px">货盘</span><div class="ai-radar-bar"><div class="ai-radar-fill" style="width:90%;background:var(--grad)"></div></div><span style="color:var(--primary);font-weight:700;width:34px">6万+</span></div>
+        </div>
+        <div class="ai-metrics">
+          <div class="ai-metric"><div class="amn">70+</div><div class="amd">热搜/天</div></div>
+          <div class="ai-metric"><div class="amn">6万</div><div class="amd">试用SKU</div></div>
+          <div class="ai-metric"><div class="amn">52w</div><div class="amd">日成交单</div></div>
+        </div>
+        <div class="ai-tags"><span>热搜抓取</span><span>CDP货盘数据</span><span>日报生成</span></div>
+      </div>
     </div>
     <div class="prompt-showcase reveal">
       <h3>💡 Prompt 实践案例</h3>
